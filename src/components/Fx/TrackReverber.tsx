@@ -12,19 +12,19 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
   const { send } = MixerMachineContext.useActorRef();
 
   const reverbsBypass = MixerMachineContext.useSelector(
-    (state) => state.context.trackFxData[trackIndex].reverbsBypass
+    (state) => state.context.trackFxData.reverbsBypass
   );
 
   const reverbsMix = MixerMachineContext.useSelector(
-    (state) => state.context.trackFxData[trackIndex].reverbsMix
+    (state) => state.context.trackFxData.reverbsMix
   );
 
   const reverbsPreDelay = MixerMachineContext.useSelector(
-    (state) => state.context.trackFxData[trackIndex].reverbsPreDelay
+    (state) => state.context.trackFxData.reverbsPreDelay
   );
 
   const reverbsDecay = MixerMachineContext.useSelector(
-    (state) => state.context.trackFxData[trackIndex].reverbsDecay
+    (state) => state.context.trackFxData.reverbsDecay
   );
 
   const disabled = reverbsBypass[trackIndex];
