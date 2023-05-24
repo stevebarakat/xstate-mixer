@@ -59,9 +59,9 @@ export const mixerMachine = createMachine(
       busPanelActive: currentMix.busPanelActive,
       busPanelPosition: currentMix.busPanelPosition,
       busPanelSize: currentMix.busPanelSize,
-      // trackPanelActive: currentTracks.trackPanelActive,
-      // trackPanelPosition: currentTracks.trackPanelPosition,
-      // trackPanelSize: currentTracks.trackPanelSize,
+      trackPanelActive: currentMix.trackPanelActive,
+      trackPanelPosition: currentMix.trackPanelPosition,
+      trackPanelSize: currentMix.trackPanelSize,
       busFxData: {
         reverbsBypass: currentMix.busFxData.reverbsBypass,
         reverbsMix: currentMix.busFxData.reverbsMix,
@@ -72,8 +72,18 @@ export const mixerMachine = createMachine(
         delaysTime: currentMix.busFxData.delaysTime,
         delaysFeedback: currentMix.busFxData.delaysFeedback,
       },
-      trackFxData: initialTrackFxData,
-      trackPanelData: initialTrackPanelData,
+      trackFxData: {
+        reverbsBypass: currentMix.trackFxData.reverbsBypass,
+        reverbsMix: currentMix.trackFxData.reverbsMix,
+        reverbsPreDelay: currentMix.trackFxData.reverbsPreDelay,
+        reverbsDecay: currentMix.trackFxData.reverbsDecay,
+        delaysBypass: currentMix.trackFxData.delaysBypass,
+        delaysMix: currentMix.trackFxData.delaysMix,
+        delaysTime: currentMix.trackFxData.delaysTime,
+        delaysFeedback: currentMix.trackFxData.delaysFeedback,
+      },
+      // trackFxData: initialTrackFxData,
+      // trackPanelData: initialTrackPanelData,
     },
     on: {
       RESET: { actions: "reset", target: "stopped" },
@@ -619,12 +629,25 @@ export const mixerMachine = createMachine(
         return [assign({ currentTrackFx: tempTrackFx }), currentTracks];
       }),
 
+      // saveTrackPanelPosition: pure((context, { trackIndex, position }) => {
+      //   const tempTrackPanelData = context.trackPanelData;
+      //   tempTrackPanelData[trackIndex].position[trackIndex] = position;
+      //   currentTracks[trackIndex].trackPanelData[trackIndex] = position;
+      //   localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
+      //   return [assign({ trackPanelData: tempTrackPanelData })];
+      // }),
+
       saveTrackPanelPosition: pure((context, { trackIndex, position }) => {
-        const tempTrackPanelData = context.trackPanelData;
-        tempTrackPanelData[trackIndex].position[trackIndex] = position;
-        currentTracks[trackIndex].trackPanelData[trackIndex] = position;
-        localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
-        return [assign({ trackPanelData: tempTrackPanelData })];
+        const tempTrackPanelsPosition = context.trackPanelPosition;
+        tempTrackPanelsPosition[trackIndex] = position;
+        localStorage.setItem(
+          "currentMix",
+          JSON.stringify({
+            ...currentMix,
+            trackPanelPosition: tempTrackPanelsPosition,
+          })
+        );
+        return [assign({ trackPanelPosition: tempTrackPanelsPosition })];
       }),
 
       saveTrackPanelSize: pure((context, { trackIndex, size }) => {
