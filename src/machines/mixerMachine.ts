@@ -629,14 +629,6 @@ export const mixerMachine = createMachine(
         return [assign({ currentTrackFx: tempTrackFx }), currentTracks];
       }),
 
-      // saveTrackPanelPosition: pure((context, { trackIndex, position }) => {
-      //   const tempTrackPanelData = context.trackPanelData;
-      //   tempTrackPanelData[trackIndex].position[trackIndex] = position;
-      //   currentTracks[trackIndex].trackPanelData[trackIndex] = position;
-      //   localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
-      //   return [assign({ trackPanelData: tempTrackPanelData })];
-      // }),
-
       saveTrackPanelPosition: pure((context, { trackIndex, position }) => {
         const tempTrackPanelsPosition = context.trackPanelPosition;
         tempTrackPanelsPosition[trackIndex] = position;
@@ -651,21 +643,39 @@ export const mixerMachine = createMachine(
       }),
 
       saveTrackPanelSize: pure((context, { trackIndex, size }) => {
-        const tempTrackPanelData = context.trackPanelData;
-        tempTrackPanelData[trackIndex].size[trackIndex] = size;
-        currentTracks[trackIndex].trackPanelData[trackIndex] = size;
-        localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
-        return [assign({ trackPanelData: tempTrackPanelData })];
+        const tempTrackPanelsSize = context.trackPanelSize;
+        tempTrackPanelsSize[trackIndex] = size;
+        localStorage.setItem(
+          "currentMix",
+          JSON.stringify({
+            ...currentMix,
+            trackPanelSize: tempTrackPanelsSize,
+          })
+        );
+        return [assign({ trackPanelSize: tempTrackPanelsSize })];
       }),
 
+      // toggleTrackPanel: pure((context, { trackIndex }) => {
+      //   const tempTrackPanelData = context.trackPanelData;
+      //   tempTrackPanelData[trackIndex].active[trackIndex] =
+      //     !tempTrackPanelData[trackIndex].active[trackIndex];
+      //   currentTracks[trackIndex].trackPanelData[trackIndex] =
+      //     !tempTrackPanelData[trackIndex].active[trackIndex];
+      //   localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
+      //   return [assign({ trackPanelData: tempTrackPanelData })];
+      // }),
+
       toggleTrackPanel: pure((context, { trackIndex }) => {
-        const tempTrackPanelData = context.trackPanelData;
-        tempTrackPanelData[trackIndex].active[trackIndex] =
-          !tempTrackPanelData[trackIndex].active[trackIndex];
-        currentTracks[trackIndex].trackPanelData[trackIndex] =
-          !tempTrackPanelData[trackIndex].active[trackIndex];
-        localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
-        return [assign({ trackPanelData: tempTrackPanelData })];
+        const tempTrackPanelsOpen = context.trackPanelActive;
+        tempTrackPanelsOpen[trackIndex] = !tempTrackPanelsOpen[trackIndex];
+        localStorage.setItem(
+          "currentMix",
+          JSON.stringify({
+            ...currentMix,
+            trackPanelActive: tempTrackPanelsOpen,
+          })
+        );
+        return [assign({ trackPanelActive: tempTrackPanelsOpen })];
       }),
     },
   }
