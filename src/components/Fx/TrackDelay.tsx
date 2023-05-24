@@ -8,7 +8,8 @@ type Props = {
 };
 
 export default function TrackDelay({ delay, trackIndex }: Props) {
-  const [state, send] = MixerMachineContext.useActor();
+  const { send } = MixerMachineContext.useActorRef();
+  const [state] = MixerMachineContext.useActor();
 
   const disabled = state.context.trackFxData.delaysBypass[trackIndex];
 

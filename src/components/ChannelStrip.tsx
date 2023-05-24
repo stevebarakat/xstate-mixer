@@ -4,7 +4,7 @@ import TrackReverber from "./Fx/TrackReverber";
 import TrackDelay from "./Fx/TrackDelay";
 import CloseButton from "./Buttons/CloseButton";
 import ChannelButton from "./Buttons/ChannelButton";
-import PitchShifter from "./Fx/PitchShifter";
+// import PitchShifter from "./Fx/PitchShifter";
 import Pan from "./Pan";
 import SoloMute from "./SoloMute";
 import Sends from "./Sends";
@@ -37,7 +37,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   const channel = channels[trackIndex];
   const reverb = useRef<Reverb>(new Reverb(8).toDestination());
   const delay = useRef<FeedbackDelay>(new FeedbackDelay().toDestination());
-  const pitchShift = useRef<PitchShift>(new PitchShift().toDestination());
+  // const pitchShift = useRef<PitchShift>(new PitchShift().toDestination());
 
   const [fx1, setFx1] = useState<JSX.Element | null>(null);
   const [fx2, setFx2] = useState<JSX.Element | null>(null);
@@ -75,18 +75,18 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
           : setFx2(<TrackDelay delay={delay.current} trackIndex={1} />);
         break;
 
-      case "pitchShift":
-        channel.disconnect();
-        channel.connect(pitchShift.current).toDestination();
+      // case "pitchShift":
+      //   channel.disconnect();
+      //   channel.connect(pitchShift.current).toDestination();
 
-        id === 0
-          ? setFx1(
-              <PitchShifter pitchShift={pitchShift.current} trackIndex={0} />
-            )
-          : setFx2(
-              <PitchShifter pitchShift={pitchShift.current} trackIndex={1} />
-            );
-        break;
+      //   id === 0
+      //     ? setFx1(
+      //         <PitchShifter pitchShift={pitchShift.current} trackIndex={0} />
+      //       )
+      //     : setFx2(
+      //         <PitchShifter pitchShift={pitchShift.current} trackIndex={1} />
+      //       );
+      //   break;
 
       default:
         break;
@@ -168,7 +168,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
           <option value={"nofx"}>{`FX ${fxIndex + 1}`}</option>
           <option value={"reverb"}>Reverb</option>
           <option value={"delay"}>Delay</option>
-          <option value={"pitchShift"}>Pitch Shift</option>
+          {/* <option value={"pitchShift"}>Pitch Shift</option> */}
         </select>
       ))}
       <div className="channel">

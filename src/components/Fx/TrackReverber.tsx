@@ -8,26 +8,9 @@ type Props = {
 };
 
 export default function TrackReverber({ reverb, trackIndex }: Props) {
-  // const [state, send] = MixerMachineContext.useActor();
-  const { send } = MixerMachineContext.useActorRef();
+  const [state, send] = MixerMachineContext.useActor();
 
-  const reverbsBypass = MixerMachineContext.useSelector(
-    (state) => state.context.trackFxData.reverbsBypass
-  );
-
-  const reverbsMix = MixerMachineContext.useSelector(
-    (state) => state.context.trackFxData.reverbsMix
-  );
-
-  const reverbsPreDelay = MixerMachineContext.useSelector(
-    (state) => state.context.trackFxData.reverbsPreDelay
-  );
-
-  const reverbsDecay = MixerMachineContext.useSelector(
-    (state) => state.context.trackFxData.reverbsDecay
-  );
-
-  const disabled = reverbsBypass[trackIndex];
+  const disabled = state.context.trackFxData.reverbsBypass[trackIndex];
 
   return (
     <div>
@@ -38,7 +21,7 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
             id={`track${trackIndex}reverbBypass`}
             type="checkbox"
             className="power-btn"
-            value={reverbsBypass[trackIndex]}
+            value={state.context.trackFxData.reverbsBypass[trackIndex]}
             onChange={(e: React.FormEvent<HTMLInputElement>): void => {
               send({
                 type: "BYPASS_TRACK_REVERB",
@@ -47,7 +30,7 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
                 trackIndex,
               });
             }}
-            checked={reverbsBypass[trackIndex]}
+            checked={state.context.trackFxData.reverbsBypass[trackIndex]}
           />
           <label htmlFor={`track${trackIndex}reverbBypass`}>{powerIcon}</label>
         </div>
@@ -61,7 +44,7 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
           min={0}
           max={1}
           step={0.01}
-          value={reverbsMix[trackIndex]}
+          value={state.context.trackFxData.reverbsMix[trackIndex]}
           disabled={disabled}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
@@ -82,7 +65,7 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
           min={0}
           max={1}
           step={0.01}
-          value={reverbsPreDelay[trackIndex]}
+          value={state.context.trackFxData.reverbsPreDelay[trackIndex]}
           disabled={disabled}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
@@ -103,7 +86,7 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
           min={0.1}
           max={20}
           step={0.1}
-          value={reverbsDecay[trackIndex]}
+          value={state.context.trackFxData.reverbsDecay[trackIndex]}
           disabled={disabled}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
